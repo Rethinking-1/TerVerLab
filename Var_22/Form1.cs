@@ -49,6 +49,7 @@ namespace Var_22
             textBox16.Text = statCharacter["Размах_выборки"].ToString();
 
             // Графики функций распределения
+            // Выборочная функция
             chart1.Series.Clear();
             chart1.Titles[0].Text = $"Выборочная функция распределения N = {N}";
             chart1.Titles[0].Visible = true;
@@ -64,22 +65,36 @@ namespace Var_22
             chart1.ChartAreas[0].AxisY.Minimum = 0;
             chart1.ChartAreas[0].AxisY.Maximum = 1;
             for (int i = 0; i < N; i++)
-            {
                 chart1.Series[0].Points.AddXY(gaussDistribution[i], ((float)i / (float)N));
-            }
-
+            // Теоретическая функция
             chart2.Series.Clear();
-            chart2.Titles[0].Text = $"Теоретическая функция распределения μ = {A * N}, σ = {Math.Sqrt(B * N)}";
+            chart2.Titles[0].Text = $"Теоретическая функция распределения\n μ = {A * N}, σ = {Math.Sqrt(B * N)}";
             chart2.Titles[0].Visible = true;
             Series series2 = new Series("Теоретическая функция распределения");
             series2.ChartType = SeriesChartType.Point;
             chart2.Series.Add(series2);            
             chart2.ChartAreas[0].AxisX.Title = "η";
             chart2.ChartAreas[0].AxisY.Title = "Fη";
-            // Fix
-            double re = chart2.DataManipulator.Statistics.NormalDistribution(0);
-            //for (int i = 0; i < N; i++)
-             //   chart2.Series[0].Points.AddXY(gaussDistribution[i], ((float)i / (float)N));
+            // -><-
+            int n = 50000;
+            float l = (A * N - 3 * (float)Math.Sqrt(B * N));
+            float r = (A * N + 3 * (float)Math.Sqrt(B * N));
+            chart2.ChartAreas[0].AxisX.Minimum = l;
+            chart2.ChartAreas[0].AxisX.Maximum = r;
+            chart2.ChartAreas[0].AxisY.Minimum = 0;
+            chart2.ChartAreas[0].AxisY.Maximum = 1;
+            List<float> crutchX = new List<float>();
+            List<float> crutchY = new List<float>();
+            for (int i = 0; i < n; i++)
+            {
+                float x = l + i * (r - l) / n;
+                crutchX.Add(x);
+                crutchY.Add((worker.Erf((x - A * N) / (Math.Sqrt(B * N))) + 1) / 2);
+            }
+            for (int i = 0; i < crutchY.Count; i++)
+                chart2.Series[0].Points.AddXY(crutchX[i], crutchY[i]);
+            // -><-
+
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -393,7 +393,6 @@
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.Legend = "Legend1";
             series1.Name = "Fn(x)";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int64;
             this.chart2.Series.Add(series1);
             this.chart2.Size = new System.Drawing.Size(544, 369);
             this.chart2.TabIndex = 10;
