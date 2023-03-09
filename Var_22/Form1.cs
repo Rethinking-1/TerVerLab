@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+
 
 namespace Var_22
 {
@@ -45,13 +47,47 @@ namespace Var_22
             textBox14.Text = statCharacter["Абс_дисперсия"].ToString();
             textBox15.Text = statCharacter["Выб_медиана"].ToString();
             textBox16.Text = statCharacter["Размах_выборки"].ToString();
+
+            // Графики функций распределения
+            chart1.Series.Clear();
+            chart1.Titles[0].Text = $"Выборочная функция распределения N = {N}";
+            chart1.Titles[0].Visible = true;
+
+            Series series1 = new Series("Выборчная функция распределения");
+            series1.ChartType = SeriesChartType.Point;
+            chart1.Series.Add(series1);
+
+            chart1.ChartAreas[0].AxisX.Title = "η - общая сумма вклада";
+            chart1.ChartAreas[0].AxisY.Title = "F'η";
+            chart1.ChartAreas[0].AxisX.Minimum = gaussDistribution.First();
+            chart1.ChartAreas[0].AxisX.Maximum = gaussDistribution.Last();
+            chart1.ChartAreas[0].AxisY.Minimum = 0;
+            chart1.ChartAreas[0].AxisY.Maximum = 1;
+            for (int i = 0; i < N; i++)
+            {
+                chart1.Series[0].Points.AddXY(gaussDistribution[i], ((float)i / (float)N));
+            }
+
+            chart2.Series.Clear();
+            chart2.Titles[0].Text = $"Теоретическая функция распределения μ = {A * N}, σ = {Math.Sqrt(B * N)}";
+            chart2.Titles[0].Visible = true;
+            Series series2 = new Series("Теоретическая функция распределения");
+            series2.ChartType = SeriesChartType.Point;
+            chart2.Series.Add(series2);            
+            chart2.ChartAreas[0].AxisX.Title = "η";
+            chart2.ChartAreas[0].AxisY.Title = "Fη";
+            // Fix
+            double re = chart2.DataManipulator.Statistics.NormalDistribution(0);
+            //for (int i = 0; i < N; i++)
+             //   chart2.Series[0].Points.AddXY(gaussDistribution[i], ((float)i / (float)N));
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            chart2.Legends[0].Enabled = false;
             //this.TopMost = true;
-           // this.FormBorderStyle = FormBorderStyle.None;
-          //  this.WindowState = FormWindowState.Maximized;
+            // this.FormBorderStyle = FormBorderStyle.None;
+            //  this.WindowState = FormWindowState.Maximized;
 
 
             pictureBox1.Image = Properties.Resources.var22;
