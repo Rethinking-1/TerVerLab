@@ -44,5 +44,29 @@ namespace Var_22
             }
             return result;
         }
-    }                                    
+
+        // Случайная величина - общая сумма вклада
+        public float totalDepositAmount(List<float> contributions)  // Contributions - вклады
+        {
+            float result = contributions.Sum();
+            return result;
+        }
+
+        // Нормальное распределение по центральной предельной теореме
+        // ---> Часть 1
+        // Розыгрыш случайной величины
+        public List<float> gaussDistribution()
+        {
+            List<float> theta = new List<float>(N);
+            for(int i = 0; i < N; i++)
+            {
+                List<float> temp = getUniformDistribution();
+                float temp2 = totalDepositAmount(temp);
+                theta[i] = temp2;
+            }
+            theta.Sort();
+            // /N?  
+            return theta;
+        }
+    }
 }
