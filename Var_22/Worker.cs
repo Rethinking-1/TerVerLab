@@ -34,13 +34,13 @@ namespace Var_22
         // Получение равномерно распределенной случайной величины [left: right)
         public List<float>getUniformDistribution()
         {
-            List<float> result = new List<float>(N);
+            List<float> result = new List<float>();
             for(int i = 0; i < N; i++)
             {
                 Random rnd = new Random();
                 float y = (float)rnd.NextDouble();
                 float x = inverseDistributionFunction(y);
-                result[i] = x;
+                result.Add(x);
             }
             return result;
         }
@@ -57,12 +57,12 @@ namespace Var_22
         // Розыгрыш случайной величины
         public List<float> gaussDistribution()
         {
-            List<float> theta = new List<float>(N);
+            List<float> theta = new List<float>();
             for(int i = 0; i < N; i++)
             {
                 List<float> temp = getUniformDistribution();
                 float temp2 = totalDepositAmount(temp);
-                theta[i] = temp2;
+                theta.Add(temp2);
             }
             theta.Sort();
             // /N?  

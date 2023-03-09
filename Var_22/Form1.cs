@@ -31,6 +31,8 @@ namespace Var_22
             textBox4.Text = A.ToString();
             textBox6.Text = B.ToString();
             Worker worker = new Worker(N, A, B);
+            List<float>gaussDistribution =  worker.gaussDistribution();
+            int stop = 0;
         }
     }
 }
