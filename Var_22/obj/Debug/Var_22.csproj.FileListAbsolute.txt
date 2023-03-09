@@ -1,0 +1,10 @@
+P:\TerVerLab\Var_22\bin\Debug\Var_22.exe.config
+P:\TerVerLab\Var_22\bin\Debug\Var_22.exe
+P:\TerVerLab\Var_22\bin\Debug\Var_22.pdb
+P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.AssemblyReference.cache
+P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.SuggestedBindingRedirects.cache
+P:\TerVerLab\Var_22\obj\Debug\Var_22.Properties.Resources.resources
+P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.GenerateResource.cache
+P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.CoreCompileInputs.cache
+P:\TerVerLab\Var_22\obj\Debug\Var_22.exe
+P:\TerVerLab\Var_22\obj\Debug\Var_22.pdb
