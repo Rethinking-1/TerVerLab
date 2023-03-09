@@ -11,6 +11,7 @@ namespace Var_22
         int N;
         int A;
         int B;
+        static Random rnd = new Random();
         Dictionary<string, float> borders;  // Границы распределения
         public Worker(int N_, int A_, int B_)
         {
@@ -37,7 +38,7 @@ namespace Var_22
             List<float> result = new List<float>();
             for(int i = 0; i < N; i++)
             {
-                Random rnd = new Random();
+
                 float y = (float)rnd.NextDouble();
                 float x = inverseDistributionFunction(y);
                 result.Add(x);

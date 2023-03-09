@@ -33,6 +33,7 @@ namespace Var_22
             Worker worker = new Worker(N, A, B);
             List<float>gaussDistribution =  worker.gaussDistribution();
             int stop = 0;
+            textBox7.Text = string.Join(" ", gaussDistribution);
         }
     }
 }
