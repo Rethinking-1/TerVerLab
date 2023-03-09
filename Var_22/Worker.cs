@@ -56,14 +56,14 @@ namespace Var_22
         // Нормальное распределение по центральной предельной теореме
         // ---> Часть 1
         // Розыгрыш случайной величины
-        public List<float> gaussDistribution()
+        public List<int> gaussDistribution()
         {
-            List<float> theta = new List<float>();
+            List<int> theta = new List<int>();
             for(int i = 0; i < N; i++)
             {
                 List<float> temp = getUniformDistribution();
                 float temp2 = totalDepositAmount(temp);
-                theta.Add(temp2);
+                theta.Add((int)temp2);
             }
             theta.Sort();
             // /N?  

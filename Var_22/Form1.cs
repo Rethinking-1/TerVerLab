@@ -31,9 +31,26 @@ namespace Var_22
             textBox4.Text = A.ToString();
             textBox6.Text = B.ToString();
             Worker worker = new Worker(N, A, B);
-            List<float>gaussDistribution =  worker.gaussDistribution();
-            int stop = 0;
+            // Розыгрыш величины
+            List<int>gaussDistribution =  worker.gaussDistribution();
             textBox7.Text = string.Join(Environment.NewLine, gaussDistribution);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            pictureBox1.Image = Properties.Resources.var22;
+
+            int x = pictureBox1.Image.Size.Width;
+            int y = pictureBox1.Image.Size.Height;
+            pictureBox1.Size = new System.Drawing.Size(x, y);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
