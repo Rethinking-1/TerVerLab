@@ -8,3 +8,4 @@ P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.GenerateResource.cache
 P:\TerVerLab\Var_22\obj\Debug\Var_22.csproj.CoreCompileInputs.cache
 P:\TerVerLab\Var_22\obj\Debug\Var_22.exe
 P:\TerVerLab\Var_22\obj\Debug\Var_22.pdb
+P:\TerVerLab\Var_22\obj\Debug\Var_22.Form1.resources

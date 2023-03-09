@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Var_22
+{
+    internal class Worker
+    {
+        int N;
+        int A;
+        int B;
+        Dictionary<string, float> borders;  // Границы распределения
+        public Worker(int N_, int A_, int B_)
+        {
+            N = N_; 
+            A = A_;
+            B = B_;
+            borders = new Dictionary<string, float>()
+            {
+                {"left", 2 * A_ - (float)Math.Sqrt(12 * B_) + 2 * A_ },
+                {"right", ((float)Math.Sqrt(12 * B_) +  A_) / 2}
+            };
+        }
+
+        // Обратная функция распределения, равномерное распределение
+        public float inverseDistributionFunction(float y)   // y ∈ [0; 1)
+        {
+            float x = y * (borders["right"] - borders["left"]) + borders["left"];  // x ∈ [left: right)
+            return x;
+        }
+
+        // Получение равномерно распределенной случайной величины [left: right)
+        public List<float>getUniformDistribution()
+        {
+            List<float> result = new List<float>();
+            return result;
+        }
+    }                                    
+}
