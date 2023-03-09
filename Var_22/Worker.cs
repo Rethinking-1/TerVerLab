@@ -34,7 +34,14 @@ namespace Var_22
         // Получение равномерно распределенной случайной величины [left: right)
         public List<float>getUniformDistribution()
         {
-            List<float> result = new List<float>();
+            List<float> result = new List<float>(N);
+            for(int i = 0; i < N; i++)
+            {
+                Random rnd = new Random();
+                float y = (float)rnd.NextDouble();
+                float x = inverseDistributionFunction(y);
+                result[i] = x;
+            }
             return result;
         }
     }                                    
