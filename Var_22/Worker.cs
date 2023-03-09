@@ -20,8 +20,8 @@ namespace Var_22
             B = B_;
             borders = new Dictionary<string, float>()
             {
-                {"left", 2 * A_ - (float)Math.Sqrt(12 * B_) + 2 * A_ },
-                {"right", ((float)Math.Sqrt(12 * B_) +  A_) / 2}
+                {"left", 2 * A_ - ((float)Math.Sqrt(12 * B_) + 2 * A_ ) / 2},
+                {"right", ((float)Math.Sqrt(12 * B_) +  2 * A_) / 2}
             };
         }
 

@@ -38,11 +38,12 @@ namespace Var_22
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            pictureBox1.Image = Properties.Resources.var22;
+            //this.TopMost = true;
+           // this.FormBorderStyle = FormBorderStyle.None;
+          //  this.WindowState = FormWindowState.Maximized;
 
+
+            pictureBox1.Image = Properties.Resources.var22;
             int x = pictureBox1.Image.Size.Width;
             int y = pictureBox1.Image.Size.Height;
             pictureBox1.Size = new System.Drawing.Size(x, y);
