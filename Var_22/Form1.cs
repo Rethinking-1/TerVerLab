@@ -16,5 +16,21 @@ namespace Var_22
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Инициализация объекта
+            string N_ = textBox2.Text;
+            string A_ = textBox4.Text;
+            string B_ = textBox6.Text;
+            int temp;
+            int N = int.TryParse(N_, out temp) ? int.Parse(N_) : 24;
+            int A = int.TryParse(A_, out temp) ? int.Parse(A_) : 10;
+            int B = int.TryParse(B_, out temp) ? int.Parse(B_) : 15;
+            textBox2.Text = N.ToString();
+            textBox4.Text = A.ToString();
+            textBox6.Text = B.ToString();
+            Worker worker = new Worker(N, A, B);
+        }
     }
 }
