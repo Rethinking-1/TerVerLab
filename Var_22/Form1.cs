@@ -31,9 +31,20 @@ namespace Var_22
             textBox4.Text = A.ToString();
             textBox6.Text = B.ToString();
             Worker worker = new Worker(N, A, B);
-            // Розыгрыш величины
+            // Розыгрыш случайной величины
             List<int>gaussDistribution =  worker.gaussDistribution();
             textBox7.Text = string.Join(Environment.NewLine, gaussDistribution);
+
+            // Получение статистических характеристик случайной величины
+            Dictionary<string, int> statCharacter = worker.statisticalCharacteristics();
+            textBox9.Text = statCharacter["Мат_ожидание"].ToString();
+            textBox10.Text = statCharacter["Выб_мат_ожидание"].ToString();
+            textBox11.Text = statCharacter["Абс_мат_ожидание"].ToString();
+            textBox12.Text = statCharacter["Дисперсия"].ToString();
+            textBox13.Text = statCharacter["Выб_дисперсия"].ToString();
+            textBox14.Text = statCharacter["Абс_дисперсия"].ToString();
+            textBox15.Text = statCharacter["Выб_медиана"].ToString();
+            textBox16.Text = statCharacter["Размах_выборки"].ToString();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -47,6 +58,11 @@ namespace Var_22
             int x = pictureBox1.Image.Size.Width;
             int y = pictureBox1.Image.Size.Height;
             pictureBox1.Size = new System.Drawing.Size(x, y);
+
+            pictureBox2.Image = Properties.Resources._1;
+            x = pictureBox2.Image.Size.Width;
+            y = pictureBox2.Image.Size.Height;
+            pictureBox2.Size = new System.Drawing.Size(x, y);
         }
 
         private void button2_Click(object sender, EventArgs e)
