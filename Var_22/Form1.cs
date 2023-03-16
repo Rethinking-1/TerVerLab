@@ -25,20 +25,24 @@ namespace Var_22
             string N_ = textBox2.Text;
             string A_ = textBox4.Text;
             string B_ = textBox6.Text;
-            int temp;
-            int N = int.TryParse(N_, out temp) ? int.Parse(N_) : 24;
-            int A = int.TryParse(A_, out temp) ? int.Parse(A_) : 10;
-            int B = int.TryParse(B_, out temp) ? int.Parse(B_) : 15;
+            string size_ = textBox18.Text;
+            float temp;
+            int temp_;
+            int N = int.TryParse(N_, out temp_) ? int.Parse(N_) : 24;
+            float A = float.TryParse(A_, out temp) ? float.Parse(A_) : 10;
+            float B = float.TryParse(B_, out temp) ? float.Parse(B_) : 15;
+            int size = int.TryParse(size_, out temp_) ? int.Parse(size_) : 30;
             textBox2.Text = N.ToString();
             textBox4.Text = A.ToString();
             textBox6.Text = B.ToString();
-            Worker worker = new Worker(N, A, B);
+            textBox18.Text = size.ToString();
+            Worker worker = new Worker(N, A, B, size);
             // Розыгрыш случайной величины
-            List<int>gaussDistribution =  worker.gaussDistribution();
+            List<float> gaussDistribution =  worker.gaussDistribution();
             textBox7.Text = string.Join(Environment.NewLine, gaussDistribution);
 
             // Получение статистических характеристик случайной величины
-            Dictionary<string, int> statCharacter = worker.statisticalCharacteristics();
+            Dictionary<string, float> statCharacter = worker.statisticalCharacteristics();
             textBox9.Text = statCharacter["Мат_ожидание"].ToString();
             textBox10.Text = statCharacter["Выб_мат_ожидание"].ToString();
             textBox11.Text = statCharacter["Абс_мат_ожидание"].ToString();
@@ -54,18 +58,33 @@ namespace Var_22
             chart1.Titles[0].Text = $"Выборочная функция распределения N = {N}";
             chart1.Titles[0].Visible = true;
 
-            Series series1 = new Series("Выборчная функция распределения");
-            series1.ChartType = SeriesChartType.Point;
+            Series series1 = new Series("Выборочная функция распределения");
+            series1.ChartType = SeriesChartType.Line;
+
+            //------------
+            series1.BorderWidth = 5;
+            //-------------
+
             chart1.Series.Add(series1);
 
             chart1.ChartAreas[0].AxisX.Title = "η - общая сумма вклада";
             chart1.ChartAreas[0].AxisY.Title = "F'η";
-            chart1.ChartAreas[0].AxisX.Minimum = gaussDistribution.First();
-            chart1.ChartAreas[0].AxisX.Maximum = gaussDistribution.Last();
+            chart1.ChartAreas[0].AxisX.Minimum = gaussDistribution.First() - 1;
+            chart1.ChartAreas[0].AxisX.Maximum = gaussDistribution.Last() + 1;
             chart1.ChartAreas[0].AxisY.Minimum = 0;
             chart1.ChartAreas[0].AxisY.Maximum = 1;
-            for (int i = 0; i < N; i++)
-                chart1.Series[0].Points.AddXY(gaussDistribution[i], ((float)i / (float)N));
+            chart1.Series[0].Points.AddXY(gaussDistribution[0] - 3 * Math.Sqrt(statCharacter["Дисперсия"]), (float)0);
+            chart1.Series[0].Points.AddXY(gaussDistribution[0], (float)0);
+           
+            for (int i = 0; i < size - 1; i++)
+            {
+                chart1.Series[0].Points.AddXY(gaussDistribution[i], ((float)(i + 1) / (float)size));
+                chart1.Series[0].Points.AddXY(gaussDistribution[i + 1], ((float)(i + 1) / (float)size));
+            }
+            chart1.Series[0].Points.AddXY(gaussDistribution[size - 1], ((float)((size)/ (float)size)));
+            chart1.Series[0].Points.AddXY(gaussDistribution[size - 1] + 3 * Math.Sqrt(statCharacter["Дисперсия"]), ((float)((size) / (float)size)));
+            for (int i = 0; i < chart1.Series[0].Points.Count; i++)
+                chart1.Series[0].Points[i].Color = Color.Green;
             // Теоретическая функция
             chart2.Series.Clear();
             chart2.Titles[0].Text = $"Теоретическая функция распределения\n μ = {A * N}, σ = {Math.Sqrt(B * N)}";
@@ -119,6 +138,11 @@ namespace Var_22
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void textBox18_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

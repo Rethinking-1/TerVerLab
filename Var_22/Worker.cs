@@ -11,16 +11,21 @@ namespace Var_22
     internal class Worker
     {
         int N;
-        int A;
-        int B;
+        float A;
+        float B;
+        int size;
         static Random rnd = new Random();
-        private List<int> gaussDistribution_;
+        private List<float> gaussDistribution_;
         Dictionary<string, float> borders;  // Границы распределения
-        public Worker(int N_, int A_, int B_)
+        public Worker(int N_, float A_, float B_, int size_)
         {
+            // FIX SIZE +
+            // На одном графике выборчаная и теоретическая (Ступеньчетую)
+            // Вычислить D
             N = N_; 
             A = A_;
             B = B_;
+            size = size_;
             borders = new Dictionary<string, float>()
             {
                 {"left", 2 * A_ - ((float)Math.Sqrt(12 * B_) + 2 * A_ ) / 2},
@@ -59,50 +64,50 @@ namespace Var_22
         // Нормальное распределение по центральной предельной теореме
         // ---> Часть 1
         // Розыгрыш случайной величины
-        public List<int> gaussDistribution()
+        public List<float> gaussDistribution()
         {
 
-            List<int> theta = new List<int>();
-            for(int i = 0; i < N; i++)
+            List<float> theta = new List<float>();
+            for(int i = 0; i < size; i++)
             {
                 List<float> temp = getUniformDistribution();
                 float temp2 = totalDepositAmount(temp);
-                theta.Add((int)temp2);
+                theta.Add(temp2);
             }
             theta.Sort();
             gaussDistribution_ = theta;
-            // /N?  
+            // 
             return theta;
         }
 
         // --->Часть 2
         // Определение теоретических и выборочных числовых характеристикик
-        public Dictionary<string, int> statisticalCharacteristics()
+        public Dictionary<string, float> statisticalCharacteristics()
         {
             float gaussSum = gaussDistribution_.Sum();
-            Dictionary<string, int> df = new Dictionary<string, int>();
+            Dictionary<string, float> df = new Dictionary<string, float>();
    
             float E_theta = A * N;  // Теоричетическое математическое ожидание
-            float x_ = gaussDistribution_.Sum() / N; // Выборочное среднее
+            float x_ = gaussDistribution_.Sum() / size; // Выборочное среднее
             float E_minus_x = Math.Abs(E_theta - x_);
 
             float D_theta = B * N;  // Теоретическая диспресия
             float S_2 = 0;  // // Выборочная дисперсия
-            for (int i = 0; i < N; i++)
-                S_2 += (float)(Math.Pow(gaussDistribution_[i] - x_, 2) / N);
+            for (int i = 0; i < size; i++)
+                S_2 += (float)(Math.Pow(gaussDistribution_[i] - x_, 2) / size);
             float D_minus_S = Math.Abs(D_theta - S_2);
-
-            float Me = (N % 2 == 1) ? gaussDistribution_[N / 2 + 1] : gaussDistribution_[N / 2] + gaussDistribution_[N / 2 + 1];// Выборочная медиана 
+            float Me;
+            Me = (size % 2 == 1) ? gaussDistribution_[size / 2] : (gaussDistribution_[size / 2 - 1] + gaussDistribution_[size / 2]) / 2;// Выборочная медиана
             float R = gaussDistribution_.Last() - gaussDistribution_.First();  // Размах выборки
 
-            df.Add("Мат_ожидание", (int)E_theta);
-            df.Add("Выб_мат_ожидание", (int)x_);
-            df.Add("Абс_мат_ожидание", (int)E_minus_x);
-            df.Add("Дисперсия", (int)D_theta);
-            df.Add("Выб_дисперсия", (int)S_2);
-            df.Add("Абс_дисперсия", (int)D_minus_S);
-            df.Add("Выб_медиана", (int)Me);
-            df.Add("Размах_выборки", (int)R);
+            df.Add("Мат_ожидание", E_theta);
+            df.Add("Выб_мат_ожидание", x_);
+            df.Add("Абс_мат_ожидание", E_minus_x);
+            df.Add("Дисперсия", D_theta);
+            df.Add("Выб_дисперсия", S_2);
+            df.Add("Абс_дисперсия", D_minus_S);
+            df.Add("Выб_медиана", Me);
+            df.Add("Размах_выборки", R);
             return df;
         }
 
