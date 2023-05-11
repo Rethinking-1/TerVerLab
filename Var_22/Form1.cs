@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-
 namespace Var_22
 {
     public partial class Form1 : Form
@@ -53,29 +52,35 @@ namespace Var_22
             textBox16.Text = statCharacter["Размах_выборки"].ToString();
 
             // Графики функций распределения
-            // Выборочная функция
             chart1.Series.Clear();
-            chart1.Titles[0].Text = $"Выборочная функция распределения N = {N}";
-            chart1.Titles[0].Visible = true;
+            // Создание
+            // series1.ChartType = SeriesChartType.Point;
 
             Series series1 = new Series("Выборочная функция распределения");
             series1.ChartType = SeriesChartType.Line;
-
-            //------------
-            series1.BorderWidth = 5;
-            //-------------
-
             chart1.Series.Add(series1);
 
+            chart1.Titles[0].Text = $"Выборочная функция распределения N = {N}";
+            chart1.Titles[0].Visible = true;
             chart1.ChartAreas[0].AxisX.Title = "η - общая сумма вклада";
-            chart1.ChartAreas[0].AxisY.Title = "F'η";
-            chart1.ChartAreas[0].AxisX.Minimum = gaussDistribution.First() - 1;
-            chart1.ChartAreas[0].AxisX.Maximum = gaussDistribution.Last() + 1;
+            chart1.ChartAreas[0].AxisY.Title = "Fη";
+            series1.BorderWidth = 5;
+
+            Series series2 = new Series("Теоретическая функция распределения");
+            series2.ChartType = SeriesChartType.Point;
+            chart1.Series.Add(series2);
+            chart1.Titles[1].Text = $"Теоретическая функция распределения\n μ = {A * N}, σ = {Math.Sqrt(B * N)}";
+            chart1.Titles[1].Visible = true;
+            // Границы
+            float l = (A * N - 3 * (float)Math.Sqrt(B * N));
+            float r = (A * N + 3 * (float)Math.Sqrt(B * N));
+            chart1.ChartAreas[0].AxisX.Minimum = l - 3 * Math.Sqrt(statCharacter["Дисперсия"]);
+            chart1.ChartAreas[0].AxisX.Maximum = r + 3 * Math.Sqrt(statCharacter["Дисперсия"]);
             chart1.ChartAreas[0].AxisY.Minimum = 0;
             chart1.ChartAreas[0].AxisY.Maximum = 1;
+            // Выборочная функция
             chart1.Series[0].Points.AddXY(gaussDistribution[0] - 3 * Math.Sqrt(statCharacter["Дисперсия"]), (float)0);
             chart1.Series[0].Points.AddXY(gaussDistribution[0], (float)0);
-           
             for (int i = 0; i < size - 1; i++)
             {
                 chart1.Series[0].Points.AddXY(gaussDistribution[i], ((float)(i + 1) / (float)size));
@@ -86,39 +91,25 @@ namespace Var_22
             for (int i = 0; i < chart1.Series[0].Points.Count; i++)
                 chart1.Series[0].Points[i].Color = Color.Green;
             // Теоретическая функция
-            chart2.Series.Clear();
-            chart2.Titles[0].Text = $"Теоретическая функция распределения\n μ = {A * N}, σ = {Math.Sqrt(B * N)}";
-            chart2.Titles[0].Visible = true;
-            Series series2 = new Series("Теоретическая функция распределения");
-            series2.ChartType = SeriesChartType.Point;
-            chart2.Series.Add(series2);            
-            chart2.ChartAreas[0].AxisX.Title = "η";
-            chart2.ChartAreas[0].AxisY.Title = "Fη";
-            // -><-
             int n = 50000;
-            float l = (A * N - 3 * (float)Math.Sqrt(B * N));
-            float r = (A * N + 3 * (float)Math.Sqrt(B * N));
-            chart2.ChartAreas[0].AxisX.Minimum = l;
-            chart2.ChartAreas[0].AxisX.Maximum = r;
-            chart2.ChartAreas[0].AxisY.Minimum = 0;
-            chart2.ChartAreas[0].AxisY.Maximum = 1;
-            List<float> crutchX = new List<float>();
-            List<float> crutchY = new List<float>();
+            List<double> theoreticalFunctionX = new List<double>();
+            List<double> theoreticalFunctionY = new List<double>();
+            float h = (r - l + 1) / n;
             for (int i = 0; i < n; i++)
             {
-                float x = l + i * (r - l) / n;
-                crutchX.Add(x);
-                crutchY.Add((worker.Erf((x - A * N) / (Math.Sqrt(B * N))) + 1) / 2);
+                double x = l + (double)i * h;
+            //    float x_ = (x - A * N) / Math.Sqrt(B * N);
+                theoreticalFunctionX.Add(x);
+                theoreticalFunctionY.Add(worker.Erf(  (x - A * (double)N) / Math.Sqrt(B * (double)N))     / 2);
             }
-            for (int i = 0; i < crutchY.Count; i++)
-                chart2.Series[0].Points.AddXY(crutchX[i], crutchY[i]);
-            // -><-
+            theoreticalFunctionY.Sort();
+            for (int i = 0; i < theoreticalFunctionY.Count; i++)
+                chart1.Series[1].Points.AddXY(theoreticalFunctionX[i], theoreticalFunctionY[i]);
 
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            chart2.Legends[0].Enabled = false;
             //this.TopMost = true;
             // this.FormBorderStyle = FormBorderStyle.None;
             //  this.WindowState = FormWindowState.Maximized;
